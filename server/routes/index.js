@@ -1,6 +1,7 @@
 // routes/index.js
 const Router = require("@koa/router");
 const mapRoutes = require("./mapRoutes");
+const fileRoutes = require("./fileRoutes");
 
 const router = new Router({
   prefix: "/api",

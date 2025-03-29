@@ -1,19 +1,19 @@
 // routes/fileRoutes.js
 const Router = require("@koa/router");
 const fileController = require("../controllers/fileController");
-const { fileUpload } = require("../middleware");
+const { fileUploader } = require("../middleware");
 
 const router = new Router({
   prefix: "/files",
 });
 
 // Upload a file
-router.post("/upload", fileUpload.single("file"), fileController.uploadFile);
+router.post("/upload", fileUploader.single("file"), fileController.uploadFile);
 
 // Upload multiple files
 router.post(
   "/upload-multiple",
-  fileUpload.array("files", 5),
+  fileUploader.array("files", 5),
   fileController.uploadMultipleFiles
 );
 

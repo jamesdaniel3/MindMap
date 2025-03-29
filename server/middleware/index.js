@@ -1,8 +1,9 @@
 // middleware/index.js
 const errorHandler = require("./errorHandler");
+const fileUploader = require("./fileUploader");
 
 module.exports = {
   errorHandler,
-  fileUpload,
+  fileUploader,
   // Export other middleware here
 };

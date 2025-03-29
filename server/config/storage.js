@@ -45,7 +45,6 @@ async function uploadFile(file, customName = null) {
     await fileUpload.save(file.buffer, {
       contentType: file.mimetype,
       // Optional: Make the file publicly accessible
-      public: true,
       metadata: {
         // Optional: Add custom metadata
         metadata: {
@@ -56,7 +55,6 @@ async function uploadFile(file, customName = null) {
     });
 
     // Make the file publicly accessible (if not already)
-    await fileUpload.makePublic();
 
     // Get the public URL
     const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
