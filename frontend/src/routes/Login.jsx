@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 // Import the auth instance from your firebase config file
 import { auth } from "../firebase";
+import googleLogo from "../assets/images/google-logo.png";
 
 import "../styles/login.css";
 
@@ -62,16 +63,13 @@ function Login({ setUserInfo }) {
   };
 
   return (
-    <div>
+    <div className="content">
       <p className="login-site-name">Mind Map</p>
       {error && <div>{error}</div>}
-      <button
-        onClick={handleGoogleSignIn}
-        disabled={loading}
-        className="google-button"
-      >
-        {loading ? "Connecting..." : "Sign in with Google"}
-      </button>
+      <div onClick={handleGoogleSignIn} className="sign-in-button">
+        <img src={googleLogo} className="google-logo"></img>
+        <p>{loading ? "Connecting..." : "Sign in with Google"}</p>
+      </div>
     </div>
   );
 }
