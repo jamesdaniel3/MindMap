@@ -1,9 +1,9 @@
 function Home(userInfo) {
-  console.log(userInfo);
   return (
     <>
       <p>This is the home page</p>
-      <p>{userInfo.userInfo}</p>
+      <p>{userInfo.userInfo.uid}</p>
+      <p>{userInfo.userInfo.displayName}</p>
     </>
   );
 }

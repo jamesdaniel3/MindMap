@@ -21,8 +21,16 @@ function Login({ setUserInfo }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        // Pass user ID to parent component via prop
-        setUserInfo(currentUser.uid);
+        // Pass user info (id and name) to parent component via prop
+        const userInfo = {
+          uid: currentUser.uid,
+          displayName: currentUser.displayName || "User", // Fallback if name is null
+          email: currentUser.email,
+          photoURL: currentUser.photoURL, // Profile picture URL
+        };
+
+        // Set the user info in the parent component
+        setUserInfo(userInfo);
 
         // Redirect to home page
         navigate("/home");
@@ -37,7 +45,11 @@ function Login({ setUserInfo }) {
     try {
       setLoading(true);
       setError(null);
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+
+      // For debugging - log the user object to see all available properties
+      console.log("Google sign in result:", result.user);
+
       // Redirect will happen in useEffect when auth state changes
     } catch (error) {
       setError(error.message);
