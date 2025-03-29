@@ -49,7 +49,7 @@ function Home({ userInfo }) {
             <img src={NewMap} className="new-map-image"></img>
           </div>
           {maps.map((mapInfo) => (
-            <MapCard key={mapInfo.id} mapInfo={mapInfo} />
+            <MapCard key={mapInfo.id} mapInfo={mapInfo} userInfo={userInfo} />
           ))}
         </div>
       </div>

@@ -6,6 +6,7 @@ import "./firebase";
 
 import Login from "./routes/Login.jsx";
 import Home from "./routes/Home.jsx";
+import Map from "./routes/Map.jsx";
 
 import "./styles/fonts.css";
 import "./styles/common.css";
@@ -23,6 +24,7 @@ const App = () => {
             userInfo ? <Home userInfo={userInfo} /> : <Navigate to="/" />
           }
         />
+        <Route path="/map/:uid/:map_id" element={<Map />} />
       </Routes>
     </>
   );
