@@ -7,6 +7,9 @@ import "./firebase";
 import Login from "./routes/Login.jsx";
 import Home from "./routes/Home.jsx";
 
+import "./styles/fonts.css";
+import "./styles/common.css";
+
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
 
