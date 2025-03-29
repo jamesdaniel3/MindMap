@@ -6,8 +6,10 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { particlesConfig } from "../config/particlesConfig";
 
-// Import the auth instance from your firebase config file
 import { auth } from "../firebase";
 import googleLogo from "../assets/images/google-logo.png";
 
@@ -17,6 +19,16 @@ function Login({ setUserInfo }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [init, setInit] = useState(false);
+
+  // this should be run only once per application lifetime
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
+  }, []);
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -62,8 +74,19 @@ function Login({ setUserInfo }) {
     }
   };
 
+  const particlesLoaded = (container) => {
+    console.log(container);
+  };
+
   return (
     <div className="content">
+      {init && (
+        <Particles
+          id="tsparticles"
+          particlesLoaded={particlesLoaded}
+          options={particlesConfig}
+        />
+      )}
       <p className="login-site-name">Mind Map</p>
       {error && <div>{error}</div>}
       <div onClick={handleGoogleSignIn} className="sign-in-button">
