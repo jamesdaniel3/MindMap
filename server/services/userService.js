@@ -24,9 +24,28 @@ async function getAllUsers() {
   }
 }
 
-// Service methods for other user operations would go here
+async function createUser(userData) {
+    const docRef = db.collection("User").doc(userData.userID);
+    const docSnap = await docRef.get();
+    if (docSnap.exists) {
+        return {
+            result: "error",
+            message: `User ${userData.userID} already exists`
+        };
+    }
+    await docRef.set(userData).catch((error) => {
+        return {
+            result: "error",
+            message: `Error writing document for user`
+        };
+    })
+    return {
+        result: "success",
+        message: `User ${userData.userID} created successfully`
+    };
+}
 
 module.exports = {
-  getAllUsers,
-  // Export other service methods here
+    getAllUsers,
+    createUser,
 };

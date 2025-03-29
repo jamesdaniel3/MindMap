@@ -16,9 +16,31 @@ async function getAllUsers(ctx) {
   }
 }
 
-// Controller methods for other user operations would go here
+async function createUser(ctx) {
+    try {
+        const userData = ctx.request.body;
+        // TODO: pull out as isMissingFields([fields]), return missing field(s)
+        if (!userData.userID) {
+            ctx.status = 400;
+            ctx.body = {
+                status: "error",
+                message: "User ID is required."
+            };
+            return;
+        }
+        const resultData = await userService.createUser(userData);
+        // TODO: pull this out
+        ctx.status = resultData.result == "success" ? 201 : 400;
+        ctx.body = {
+            status: resultData.result,
+            message: resultData.message
+        };
+    } catch (error) {
+        ctx.throw(500, error.message);
+    }
+}
 
 module.exports = {
-  getAllUsers,
-  // Export other controller methods here
+    getAllUsers,
+    createUser,
 };

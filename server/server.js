@@ -6,6 +6,7 @@ const cors = require("@koa/cors");
 const { errorHandler } = require("./middleware");
 const routes = require("./routes");
 const config = require("./config");
+const { koaBody } = require("koa-body");
 
 // Initialize Firebase
 require("./config/firebase");
@@ -18,6 +19,13 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser());
 app.use(errorHandler);
+
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    maxFileSize: 200 * 1024 * 1024
+  }
+}));
 
 // Apply routes
 app.use(routes.routes());
