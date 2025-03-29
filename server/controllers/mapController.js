@@ -16,9 +16,32 @@ async function getAllMaps(ctx) {
   }
 }
 
+async function createMap(ctx) {
+  try {
+    const mapData = ctx.request.body;
+    if (!mapData.userID) {
+      ctx.status = 400;
+      ctx.body = {
+          status: "error",
+          message: "userID is required."
+      };
+      return;
+    }
+    const newMapID = await mapService.createMap(mapData);
+    ctx.status = !newMapID ? 400 : 201;
+    ctx.body = {
+      status: !newMapID ? "error" : "success",
+      message: !newMapID ? "Failed creating map" : "Successfully created map",
+      mapID: newMapID
+    }
+  } catch (error) {
+    ctx.throw(500, error.message);
+  }
+}
+
 // Controller methods for other map operations would go here
 
 module.exports = {
   getAllMaps,
-  // Export other controller methods here
+  createMap,
 };
