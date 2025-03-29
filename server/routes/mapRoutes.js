@@ -7,6 +7,6 @@ const router = new Router({
 });
 
 router.get("/", mapController.getAllMaps);
-router.post('/', mapController.createMap);
+router.post('/', mapController.initMap);
 
 module.exports = router;

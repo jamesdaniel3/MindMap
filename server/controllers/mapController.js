@@ -1,5 +1,6 @@
 // controllers/mapController.js
 const mapService = require("../services/mapService");
+const nodeController = require("../controllers/nodeController");
 const { formatResponse } = require("../utils/responseFormatter");
 
 /**
@@ -16,7 +17,7 @@ async function getAllMaps(ctx) {
   }
 }
 
-async function createMap(ctx) {
+async function initMap(ctx) {
   try {
     const mapData = ctx.request.body;
     if (!mapData.userID) {
@@ -27,6 +28,10 @@ async function createMap(ctx) {
       };
       return;
     }
+    const rootNodeID = await nodeController.createNode({
+      name: "New Node",
+    });
+    mapData.nodes = [rootNodeID];
     const newMapID = await mapService.createMap(mapData);
     ctx.status = !newMapID ? 400 : 201;
     ctx.body = {
@@ -39,9 +44,7 @@ async function createMap(ctx) {
   }
 }
 
-// Controller methods for other map operations would go here
-
 module.exports = {
   getAllMaps,
-  createMap,
+  initMap,
 };

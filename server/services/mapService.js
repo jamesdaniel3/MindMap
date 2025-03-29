@@ -31,8 +31,6 @@ async function createMap(mapData) {
   return newMapRef.id;
 }
 
-// Service methods for other map operations would go here
-
 module.exports = {
   getAllMaps,
   createMap,
