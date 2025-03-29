@@ -79,7 +79,7 @@ function Login({ setUserInfo }) {
   };
 
   return (
-    <div className="content">
+    <div className="login-content">
       {init && (
         <Particles
           id="tsparticles"

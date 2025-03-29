@@ -5,7 +5,7 @@
   z-index: 1;
 }
 
-.content {
+.login-content {
   display: flex;
   flex-direction: column;
   width: 100vw;
