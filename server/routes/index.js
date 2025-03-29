@@ -8,6 +8,7 @@ const router = new Router({
 
 // Register all route modules here
 router.use(mapRoutes.routes(), mapRoutes.allowedMethods());
+router.use(fileRoutes.routes(), fileRoutes.allowedMethods());
 
 // Health check endpoint
 router.get("/health", (ctx) => {
