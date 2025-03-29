@@ -10,6 +10,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  position: fixed;
+  left: 4%;
+  right: 5%;
 }
 
 .sign-out-text {
