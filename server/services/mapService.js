@@ -24,9 +24,20 @@ async function getAllMaps() {
   }
 }
 
-// Service methods for other map operations would go here
+async function createMap(mapData) {
+  const newMapRef = await db.collection("Map").add(mapData).catch((error) => {
+    return null;
+  });
+  return newMapRef.id;
+}
+
+async function getMap(mapID) {
+  const mapSnapshot = await db.collection("Map").doc(mapID).get();
+  return mapSnapshot.data();
+}
 
 module.exports = {
   getAllMaps,
-  // Export other service methods here
+  createMap,
+  getMap,
 };
