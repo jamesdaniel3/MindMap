@@ -19,7 +19,6 @@ async function getAllUsers(ctx) {
 async function createUser(ctx) {
     try {
         const userData = ctx.request.body;
-        // TODO: pull out as isMissingFields([fields]), return missing field(s)
         if (!userData.userID) {
             ctx.status = 400;
             ctx.body = {
@@ -28,8 +27,12 @@ async function createUser(ctx) {
             };
             return;
         }
+        ensureFields(userData, {
+            displayName: "newUser",
+            email: "",
+            photoURL: "",
+        })
         const resultData = await userService.createUser(userData);
-        // TODO: pull this out
         ctx.status = resultData.result == "success" ? 201 : 400;
         ctx.body = {
             status: resultData.result,

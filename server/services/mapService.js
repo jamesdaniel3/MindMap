@@ -31,7 +31,13 @@ async function createMap(mapData) {
   return newMapRef.id;
 }
 
+async function getMap(mapID) {
+  const mapSnapshot = await db.collection("Map").doc(mapID).get();
+  return mapSnapshot.data();
+}
+
 module.exports = {
   getAllMaps,
   createMap,
+  getMap,
 };
