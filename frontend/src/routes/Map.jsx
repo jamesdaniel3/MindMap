@@ -5,6 +5,7 @@ import { ReactFlow, Background, Controls } from "@xyflow/react";
 import ContentModal from "../components/ContentModal";
 
 import "@xyflow/react/dist/style.css";
+import "../styles/map.css";
 
 export default function Map() {
   const { uid, map_id } = useParams();
@@ -140,8 +141,6 @@ export default function Map() {
   // Function to handle node click and display modal
   const onNodeClick = useCallback(
     (event, node) => {
-      console.log("Node clicked:", node);
-
       // Find the full node data from mapInfo
       const nodeData = mapInfo.nodes.find((n) => n.id === node.id);
       if (nodeData) {
@@ -157,14 +156,7 @@ export default function Map() {
   };
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <div className="map-container">
       <ReactFlow nodes={nodes} edges={edges} onNodeClick={onNodeClick} fitView>
         <Background />
         <Controls />
