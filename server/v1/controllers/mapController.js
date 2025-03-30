@@ -1,10 +1,10 @@
 // controllers/mapController.js
-const util = require("../utils/controllerUtils")
+const util = require("../utils/controllerUtils");
 
 const mapService = require("../services/mapService");
-const nodeController = require("../controllers/nodeController");
-const nodeContentController = require("../controllers/nodeContentController");
-const userNodeContentController = require("../controllers/userNodeContentController");
+const nodeController = require("./nodeController");
+const nodeContentController = require("./nodeContentController");
+const userNodeContentController = require("./userNodeContentController");
 const { formatResponse } = require("../utils/responseFormatter");
 
 /**
@@ -28,8 +28,8 @@ async function initMap(ctx) {
     if (!mapData.userID) {
       ctx.status = 400;
       ctx.body = {
-          status: "error",
-          message: "userID is required."
+        status: "error",
+        message: "userID is required.",
       };
       return;
     }
@@ -43,8 +43,8 @@ async function initMap(ctx) {
     ctx.body = {
       status: !newMapID ? "error" : "success",
       message: !newMapID ? "Failed creating map" : "Successfully created map",
-      mapID: newMapID
-    }
+      mapID: newMapID,
+    };
   } catch (error) {
     ctx.throw(500, error.message);
   }
@@ -52,15 +52,15 @@ async function initMap(ctx) {
 
 async function APILoadMap(ctx) {
   try {
-    const loadedMapData = {}
+    const loadedMapData = {};
     const body = ctx.request.body;
     const mapID = body.mapID;
     const userID = body.userID;
     if (!userID) {
       ctx.status = 400;
       ctx.body = {
-          status: "error",
-          message: `Need userID`
+        status: "error",
+        message: `Need userID`,
       };
       return;
     }
@@ -69,44 +69,58 @@ async function APILoadMap(ctx) {
     if (!mapData) {
       ctx.status = 400;
       ctx.body = {
-          status: "error",
-          message: `Could not find map for ID=${mapID}`
+        status: "error",
+        message: `Could not find map for ID=${mapID}`,
       };
       return;
     }
     loadedMapData.name = mapData.name;
     loadedMapData.isOwner = mapData.userID == userID;
     loadedMapData.nodes = new Array(mapData.nodes.length);
-    // loop over nodes 
+    // loop over nodes
     for (let nodeInd = 0; nodeInd < mapData.nodes.length; nodeInd++) {
       const nodeID = mapData.nodes[nodeInd];
       const nodeData = await nodeController.getNode(nodeID);
       // get userNodeContent from first nodeContentID + userID. if not there and not owner, then we skip this node entirely and continue out
       if (!loadedMapData.isOwner) {
-        const firstUserNodeContent = await userNodeContentController.getUserNodeContent(userID, nodeData.contents[0]);
+        const firstUserNodeContent =
+          await userNodeContentController.getUserNodeContent(
+            userID,
+            nodeData.contents[0]
+          );
         if (!firstUserNodeContent) {
           continue;
         }
       }
       const contents = new Array(nodeData.contents.length);
       const userContents = new Array(contents.length);
-      for (let nodeContentInd = 0; nodeContentInd < nodeData.contents.length; nodeContentInd++) {
+      for (
+        let nodeContentInd = 0;
+        nodeContentInd < nodeData.contents.length;
+        nodeContentInd++
+      ) {
         const nodeContentID = nodeData.contents[nodeContentInd];
-        const nodeContentData = await nodeContentController.getNodeContent(nodeContentID);
+        const nodeContentData = await nodeContentController.getNodeContent(
+          nodeContentID
+        );
         contents[nodeContentInd] = {
           nodeContentID: nodeContentData.nodeContentID,
-          title: nodeContentData.title
+          title: nodeContentData.title,
         };
         // now, if the user is not the owner, fill out the node's userContents
         if (!loadedMapData.isOwner) {
-          const userNodeContentData = await userNodeContentController.getUserNodeContent(userID, nodeContentID);
+          const userNodeContentData =
+            await userNodeContentController.getUserNodeContent(
+              userID,
+              nodeContentID
+            );
           if (!userNodeContentData) {
             continue;
           }
           userContents[nodeContentInd] = {
             userNodeContentID: userNodeContentData.userNodeContentID,
-            completed: userNodeContentData.completed
-          }
+            completed: userNodeContentData.completed,
+          };
         }
       }
       loadedMapData.nodes[nodeInd] = {
@@ -115,14 +129,14 @@ async function APILoadMap(ctx) {
         prereqs: nodeData.prereqs,
         postreqs: nodeData.postreqs,
         contents: contents,
-        userContents: userContents
+        userContents: userContents,
       };
     }
     ctx.status = 201;
     ctx.body = {
-        status: "success",
-        mapData: loadedMapData
-    }
+      status: "success",
+      mapData: loadedMapData,
+    };
   } catch (e) {
     ctx.throw(500, e.message);
   }

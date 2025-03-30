@@ -5,7 +5,7 @@ const fileRoutes = require("./fileRoutes");
 const userRoutes = require("./userRoutes");
 
 const router = new Router({
-  prefix: "/api",
+  prefix: "/api/v1",
 });
 
 // Register all route modules here
