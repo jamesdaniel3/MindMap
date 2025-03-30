@@ -79,3 +79,20 @@
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 999;
 }
+
+.back-button-container {
+  position: absolute;
+  left: 1.5%;
+  top: 1.5%;
+  z-index: 2;
+}
+
+.back-home-text {
+  font-family: "Lato-Bold", sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.back-home-text:hover {
+  text-decoration: underline;
+}

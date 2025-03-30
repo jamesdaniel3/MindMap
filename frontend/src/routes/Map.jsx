@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import fakeJson from "../assets/fake_json.json";
 import { ReactFlow, Background, Controls } from "@xyflow/react";
 import ContentModal from "../components/ContentModal";
@@ -17,6 +17,7 @@ export default function Map() {
 
   const horizontalSpacing = 250; // Horizontal space between nodes
   const verticalSpacing = 150; // Vertical space between levels
+  const navigate = useNavigate();
 
   // Function to generate nodes and edges using BFS
   const generateGraphData = useCallback((data) => {
@@ -155,14 +156,20 @@ export default function Map() {
     setShowModal(false);
   };
 
+  function handleGoBack() {
+    navigate(`/home`);
+  }
+
   return (
     <div className="map-container">
+      <div className="back-button-container" onClick={handleGoBack}>
+        <p className="back-home-text">Back To Maps</p>
+      </div>
       <ReactFlow nodes={nodes} edges={edges} onNodeClick={onNodeClick} fitView>
         <Background />
         <Controls />
       </ReactFlow>
 
-      {/* Use the ContentModal component */}
       <ContentModal
         showModal={showModal}
         selectedNode={selectedNode}
