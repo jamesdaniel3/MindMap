@@ -1,0 +1,17 @@
+.static-assignment-container {
+  padding: 0 5%;
+}
+
+.static-assignment-header {
+  font-family: "Lato-Bold", sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  border: 2px;
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.static-assignment {
+}

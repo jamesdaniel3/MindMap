@@ -7,7 +7,7 @@ import "./firebase";
 import Login from "./routes/Login.jsx";
 import Home from "./routes/Home.jsx";
 import Map from "./routes/Map.jsx";
-import ContentDisplay from "./routes/ContentDisplay.jsx";
+import AssignmentDisplay from "./routes/AssignmentDisplay.jsx";
 
 import "./styles/fonts.css";
 import "./styles/common.css";
@@ -26,7 +26,10 @@ const App = () => {
           }
         />
         <Route path="/map/:uid/:map_id" element={<Map />} />
-        <Route path="/content/:content_id" element={<ContentDisplay />} />
+        <Route
+          path="/assignment/:assignment_id"
+          element={<AssignmentDisplay />}
+        />
       </Routes>
     </>
   );

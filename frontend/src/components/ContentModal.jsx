@@ -50,8 +50,8 @@ const ContentModal = ({
                         </td>
                         <td>
                           <a
-                            href={`/content/${content.id}`}
-                            className="content-link"
+                            href={`/assignment/${content.id}`}
+                            className="assignment-link"
                           >
                             {content.title}
                           </a>
