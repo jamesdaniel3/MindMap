@@ -1,0 +1,98 @@
+.map-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Modal container styles */
+.modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 75%;
+  height: 100%;
+  background-color: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.modal-container.visible {
+  transform: translateX(0);
+}
+
+.modal-container.hidden {
+  transform: translateX(100%);
+}
+
+/* Modal header styles */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Table styles */
+.content-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.content-table th {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.content-table tr {
+  border-bottom: 1px solid #eee;
+}
+
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-link {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Backdrop overlay */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.back-button-container {
+  position: absolute;
+  left: 1.5%;
+  top: 1.5%;
+  z-index: 2;
+}
+
+.back-home-text {
+  font-family: "Lato-Bold", sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.back-home-text:hover {
+  text-decoration: underline;
+}

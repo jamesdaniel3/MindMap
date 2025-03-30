@@ -6,6 +6,8 @@ import "./firebase";
 
 import Login from "./routes/Login.jsx";
 import Home from "./routes/Home.jsx";
+import Map from "./routes/Map.jsx";
+import AssignmentDisplay from "./routes/AssignmentDisplay.jsx";
 
 import "./styles/fonts.css";
 import "./styles/common.css";
@@ -22,6 +24,11 @@ const App = () => {
           element={
             userInfo ? <Home userInfo={userInfo} /> : <Navigate to="/" />
           }
+        />
+        <Route path="/map/:uid/:map_id" element={<Map />} />
+        <Route
+          path="/assignment/:assignment_id"
+          element={<AssignmentDisplay />}
         />
       </Routes>
     </>

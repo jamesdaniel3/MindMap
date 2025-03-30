@@ -1,3 +1,11 @@
 body {
   font-family: "Lato-Regular", sans-serif;
 }
+
+.loading-container {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

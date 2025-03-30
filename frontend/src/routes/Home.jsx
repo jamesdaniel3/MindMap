@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import MapCard from "../components/MapCard";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import "../styles/home.css";
 import NewMap from "../assets/images/new-map1.png";
@@ -31,28 +32,26 @@ function Home({ userInfo }) {
     fetchMapInfo();
   }, []);
 
-  if (isLoading) {
-    return (
-      <>
-        <p>Loading ...</p>
-      </>
-    );
-  }
-
   return (
     <>
       <Header displayName={userInfo.displayName} />
-      <div className="home-content">
-        <div className="map-cards-container">
-          <div className="map-card">
-            <p className="map-title">Create a new map</p>
-            <img src={NewMap} className="new-map-image"></img>
-          </div>
-          {maps.map((mapInfo) => (
-            <MapCard key={mapInfo.id} mapInfo={mapInfo} />
-          ))}
+      {isLoading ? (
+        <div className="loading-container">
+          <ClipLoader size={50} />
         </div>
-      </div>
+      ) : (
+        <div className="home-content">
+          <div className="map-cards-container">
+            <div className="map-card">
+              <p className="map-title">Create a new map</p>
+              <img src={NewMap} className="new-map-image"></img>
+            </div>
+            {maps.map((mapInfo) => (
+              <MapCard key={mapInfo.id} mapInfo={mapInfo} userInfo={userInfo} />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
