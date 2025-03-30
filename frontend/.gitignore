@@ -27,3 +27,4 @@ dist-ssr
 .env
 
 /src/assets/fake_json.json
+/src/assets/fake_json2.json
