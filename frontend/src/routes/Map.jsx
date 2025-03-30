@@ -66,16 +66,6 @@ export default function Map() {
       const x = position * horizontalSpacing;
       const y = level * verticalSpacing;
 
-      // Calculate completion progress
-      const contentIds = node.contents.map((content) => content.id);
-      const completedContents = data.userContents.filter(
-        (uc) => contentIds.includes(uc.id) && uc.completed
-      );
-      const progressPercentage =
-        node.contents.length > 0
-          ? (completedContents.length / node.contents.length) * 100
-          : 0;
-
       resultNodes.push({
         id: node.id,
         position: { x, y },
