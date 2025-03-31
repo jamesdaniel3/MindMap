@@ -1,17 +1,5 @@
 import db from "../db/db";
-
-interface HeatlthStatus {
-  status: "up" | "down";
-  message: string;
-  timestamp: string;
-  details?: {
-    database?: {
-      status: "up" | "down";
-      message: string;
-      responseTime?: number;
-    };
-  };
-}
+import { HeatlthStatus } from "../interfaces/healthInterfaces";
 
 export const checkDatabaseHealth = async (): Promise<HeatlthStatus> => {
   const startTime = Date.now();

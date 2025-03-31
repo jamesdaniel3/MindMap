@@ -1,9 +1,5 @@
 import knex from "../db/db";
-
-interface MigrationResult {
-  migrationCount: number;
-  completedMigrations: string[];
-}
+import { MigrationResult, RollbackResult } from "../interfaces/adminInterfaces";
 
 export const doDbMigrations = async (): Promise<MigrationResult> => {
   try {
@@ -23,11 +19,6 @@ export const doDbMigrations = async (): Promise<MigrationResult> => {
     throw error; // Let the controller handle the error
   }
 };
-
-interface RollbackResult {
-  rollbackCount: number;
-  rolledBackMigrations: string[];
-}
 
 export const doDbRollbacks = async (): Promise<RollbackResult> => {
   try {
