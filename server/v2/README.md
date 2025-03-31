@@ -11,7 +11,6 @@ server/
 │   ├── db/                   # Database migrations and seeds
 │   ├── interfaces/           # Interfaces
 │   ├── middleware/           # Custom middleware
-│   ├── queries/              # Database queries
 │   ├── routes/               # API routes
 │   ├── services/             # Business logic
 │   ├── utils/                # Utility functions
