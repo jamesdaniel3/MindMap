@@ -8,7 +8,12 @@
     "dev": "nodemon --watch '**/*.ts' --exec 'ts-node' server.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate:make": "dotenv -e .env knex migrate:make --knexfile knexfile.ts -x ts",
+    "migrate:latest": "dotenv -e .env knex migrate:latest --knexfile knexfile.ts",
+    "migrate:rollback": "dotenv -e .env knex migrate:rollback --knexfile knexfile.ts",
+    "seed:make": "dotenv -e .env knex seed:make --knexfile knexfile.ts -x ts",
+    "seed:run": "dotenv -e .env knex seed:run --knexfile knexfile.ts"
   },
   "keywords": [
     "typescript",
@@ -21,7 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.7",
     "knex": "^3.0.1",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
@@ -32,10 +37,11 @@
     "@types/koa": "^2.13.9",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-router": "^7.4.5",
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.17.28",
     "@types/pg": "^8.10.7",
+    "dotenv-cli": "^8.0.0",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "engines": {
