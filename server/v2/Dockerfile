@@ -31,8 +31,7 @@ COPY --from=builder /app/dist ./dist
 # Copy migrations directory
 COPY --from=builder /app/db ./db
 
-# Copy knexfile for migrations
-# COPY --from=builder /app/knexfile.js ./
+# Copy config file 
 COPY --from=builder /app/tsconfig.json ./
 
 # Set environment variables
