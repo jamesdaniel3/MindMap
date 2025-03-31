@@ -71,6 +71,12 @@ The first time you open your docker instance, I recommend using Postman to first
 To close a docker instance:
 
 ```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+To close a docker instance and remove volumes (this will delete your database history):
+
+```bash
 docker-compose -f docker-compose.dev.yml down -v
 ```
 
