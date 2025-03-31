@@ -1,16 +1,21 @@
 import { Context } from "koa";
 import { doDbMigrations, doDbRollbacks } from "../services/adminServices";
 
+// Helper function for API key authorization using URL param
+const checkApiKey = (ctx: Context): boolean => {
+  const apiKey = ctx.params.api_key;
+  if (!apiKey || apiKey !== process.env.ADMIN_API_KEY) {
+    ctx.status = 401;
+    ctx.body = { success: false, message: "Unauthorized" };
+    return false;
+  }
+  return true;
+};
+
 export const dbMigrations = async (ctx: Context): Promise<void> => {
   try {
-    // Check for authorization - you might want to add middleware for this
-    // This is a simple check, consider implementing proper auth middleware
-    // const apiKey = ctx.request.headers["x-api-key"];
-    // if (!apiKey || apiKey !== process.env.ADMIN_API_KEY) {
-    //   ctx.status = 401;
-    //   ctx.body = { success: false, message: "Unauthorized" };
-    //   return;
-    // }
+    // Check authorization
+    if (!checkApiKey(ctx)) return;
 
     // Run migrations
     const result = await doDbMigrations();
@@ -39,6 +44,9 @@ export const dbMigrations = async (ctx: Context): Promise<void> => {
 
 export const dbRollbacks = async (ctx: Context): Promise<void> => {
   try {
+    // Check authorization
+    if (!checkApiKey(ctx)) return;
+
     // Run rollbacks
     const result = await doDbRollbacks();
 
