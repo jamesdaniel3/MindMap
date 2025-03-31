@@ -23,3 +23,31 @@ export const doDbMigrations = async (): Promise<MigrationResult> => {
     throw error; // Let the controller handle the error
   }
 };
+
+interface RollbackResult {
+  rollbackCount: number;
+  rolledBackMigrations: string[];
+}
+
+export const doDbRollbacks = async (): Promise<RollbackResult> => {
+  try {
+    // Perform rollback
+    const [rolledBackMigrations, rollbackCount] = await knex.migrate.rollback(
+      {}
+    );
+
+    // Log results
+    console.log(
+      `Rolled back ${rollbackCount} migration${rollbackCount !== 1 ? "s" : ""}`
+    );
+    console.log("Rolled back migrations:", rolledBackMigrations);
+
+    return {
+      rollbackCount,
+      rolledBackMigrations,
+    };
+  } catch (error) {
+    console.error("Rollback service error:", error);
+    throw error; // Let the controller handle the error
+  }
+};

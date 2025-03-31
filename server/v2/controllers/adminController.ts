@@ -1,5 +1,5 @@
 import { Context } from "koa";
-import { doDbMigrations } from "../services/adminServices";
+import { doDbMigrations, doDbRollbacks } from "../services/adminServices";
 
 export const dbMigrations = async (ctx: Context): Promise<void> => {
   try {
@@ -32,6 +32,33 @@ export const dbMigrations = async (ctx: Context): Promise<void> => {
         error instanceof Error
           ? error.message
           : "Unknown error during migration",
+      error: process.env.NODE_ENV === "development" ? error : undefined,
+    };
+  }
+};
+
+export const dbRollbacks = async (ctx: Context): Promise<void> => {
+  try {
+    // Run rollbacks
+    const result = await doDbRollbacks();
+
+    // Return success response
+    ctx.status = 200;
+    ctx.body = {
+      success: true,
+      message: `Database rollback completed successfully (1 migration)`,
+      data: result,
+    };
+  } catch (error) {
+    // Handle errors
+    console.error("Rollback error:", error);
+    ctx.status = 500;
+    ctx.body = {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Unknown error during rollback",
       error: process.env.NODE_ENV === "development" ? error : undefined,
     };
   }
