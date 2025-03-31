@@ -54,6 +54,15 @@ Because of some difficulties I ran into with executing migrations and rollbacks 
 
 The ADMIN_API_KEY value can be found in your env file and in the google cloud revision's environment variables.
 
+### Viewing the Databases
+
+The production instance of the database can be viewed through a GUI in Google Cloud SQL in the Cloud SQL Studio. I have not tried to set up a GUI for the docker instance, but it can accessed through the terminal with the following:
+
+```bash
+docker exec -it v2-postgres-1 bash   # assuming the name of your postgres instance is v2-postgres1
+psql -U postgres -d postgres
+```
+
 ## Running Backend Locally
 
 To run the backend locally, run the following in terminal:
