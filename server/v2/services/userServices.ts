@@ -1,21 +1,17 @@
+// services/userServices.ts
 import db from "../db/db";
-import { User } from "../interfaces/userInterfaces";
+import {
+  User,
+  UserDbModel,
+  UserCreateParams,
+} from "../interfaces/userInterfaces";
 
-interface UserData {
-  google_user_id: string;
-  display_name: string;
-  email: string;
-  photo_url?: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export const findOrCreate = async (
-  googleUserId: string,
-  displayName: string,
-  email: string,
-  photo_url?: string
-): Promise<User> => {
+export const findOrCreate = async ({
+  googleUserId,
+  displayName,
+  email,
+  photo_url,
+}: UserCreateParams): Promise<User> => {
   try {
     // Use Knex query builder
     const existingUser = await db("users")
@@ -49,7 +45,7 @@ export const findOrCreate = async (
 };
 
 // Helper function to format user data from DB to API response
-function formatUser(userData: UserData): User {
+function formatUser(userData: UserDbModel): User {
   return {
     googleUserId: userData.google_user_id,
     displayName: userData.display_name,

@@ -17,12 +17,12 @@ export const userFindOrCreate = async (ctx: Context): Promise<void> => {
       return;
     }
 
-    const user = await findOrCreate(
+    const user = await findOrCreate({
       googleUserId,
       displayName,
       email,
-      photo_url
-    );
+      photo_url,
+    });
 
     ctx.status = 200;
     ctx.body = { user };
