@@ -19,13 +19,20 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files and install production dependencies
+# Copy package files
 COPY package*.json ./
-# Use npm install with production flag
-RUN npm install --omit=dev
+
+# Install ts-node and typescript for runtime migration support
+RUN npm install --omit=dev && npm install ts-node typescript @types/node
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
+
+# Copy migrations directory
+COPY --from=builder /app/db ./db
+
+# Copy config file 
+COPY --from=builder /app/tsconfig.json ./
 
 # Set environment variables
 ENV NODE_ENV=production
