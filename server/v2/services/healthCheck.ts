@@ -1,4 +1,4 @@
-import db from "../config/db";
+import db from "../db/db";
 
 interface HeatlthStatus {
   status: "up" | "down";
