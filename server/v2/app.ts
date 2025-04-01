@@ -15,8 +15,14 @@ const app = new Koa();
 
 // install global middleware
 app.use(errorHandler);
+app.use(
+  bodyParser({
+    enableTypes: ["json", "form"],
+    jsonLimit: "5mb",
+    formLimit: "5mb",
+  })
+);
 app.use(logger);
-app.use(bodyParser());
 
 // register routes
 app.use(routes.routes());

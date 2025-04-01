@@ -11,7 +11,6 @@ server/
 │   ├── db/                   # Database migrations and seeds
 │   ├── interfaces/           # Interfaces
 │   ├── middleware/           # Custom middleware
-│   ├── queries/              # Database queries
 │   ├── routes/               # API routes
 │   ├── services/             # Business logic
 │   ├── utils/                # Utility functions
@@ -53,6 +52,15 @@ npx knex migrate:make migration_name
 Because of some difficulties I ran into with executing migrations and rollbacks in production, migrations and rollbacks are handled through the API. They can be found at `BASE_URL/api/v2/admin/migrate/ADMIN_API_KEY` and `BASE_URL/api/v2/admin/rollback/ADMIN_API_KEY` respectively.
 
 The ADMIN_API_KEY value can be found in your env file and in the google cloud revision's environment variables.
+
+### Viewing the Databases
+
+The production instance of the database can be viewed through a GUI in Google Cloud SQL in the Cloud SQL Studio. I have not tried to set up a GUI for the docker instance, but it can accessed through the terminal with the following:
+
+```bash
+docker exec -it v2-postgres-1 bash   # assuming the name of your postgres instance is v2-postgres1
+psql -U postgres -d postgres
+```
 
 ## Running Backend Locally
 
