@@ -1,4 +1,3 @@
-// services/userServices.ts
 import db from "../db/db";
 import {
   User,
