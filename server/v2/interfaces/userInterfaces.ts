@@ -34,3 +34,11 @@ export interface UserCreateParams {
   email: string;
   photo_url?: string;
 }
+
+export interface UserFindParams {
+  googleUserId: string;
+}
+
+export interface UserFindResponse {
+  userExists: boolean;
+}
