@@ -64,7 +64,7 @@ psql -U postgres -d postgres
 
 ## Running Backend Locally
 
-To run the backend locally, run the following in terminal:
+To run the backend locally, start the docker app and run the following in terminal:
 
 ```bash
 docker-compose -f docker-compose.dev.yml build --no-cache
