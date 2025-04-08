@@ -14,7 +14,6 @@ dotenv.config(); // loads env vars
 const app = new Koa();
 
 // install global middleware
-app.use(errorHandler);
 app.use(
   bodyParser({
     enableTypes: ["json", "form"],
@@ -23,6 +22,7 @@ app.use(
   })
 );
 app.use(logger);
+app.use(errorHandler);
 
 // register routes
 app.use(routes.routes());
