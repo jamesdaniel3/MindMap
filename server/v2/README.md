@@ -46,7 +46,7 @@ Knex is also used to build the queries used for logic, and its documentation can
 To make a new migration:
 
 ```bash
-npx knex migrate:make migration_name
+npx knex migrate:make <migration_name>
 ```
 
 Because of some difficulties I ran into with executing migrations and rollbacks in production, migrations and rollbacks are handled through the API. They can be found at `BASE_URL/api/v2/admin/migrate/ADMIN_API_KEY` and `BASE_URL/api/v2/admin/rollback/ADMIN_API_KEY` respectively.
