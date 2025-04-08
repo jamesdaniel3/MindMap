@@ -1,10 +1,11 @@
 import Router from "koa-router";
-import { allMaps } from "../controllers/mapController";
+import { allMaps, mapCreater } from "../controllers/mapController";
 
 const router = new Router({
   prefix: "/maps",
 });
 
 router.get("/find-all", allMaps);
+router.post("/create-map", mapCreater);
 
 export default router;
