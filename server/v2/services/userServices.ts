@@ -3,6 +3,8 @@ import {
   User,
   UserDbModel,
   UserCreateParams,
+  UserFindParams,
+  UserFindResponse,
 } from "../interfaces/userInterfaces";
 
 export const findOrCreate = async ({
@@ -41,6 +43,22 @@ export const findOrCreate = async ({
     console.error("Error in findOrCreate service:", error);
     throw error;
   }
+};
+
+export const findUser = async ({
+  googleUserId,
+}: UserFindParams): Promise<UserFindResponse> => {
+  const [user] = await db("users").where({ google_user_id: googleUserId });
+
+  if (user === undefined) {
+    return {
+      userExists: false,
+    };
+  }
+
+  return {
+    userExists: true,
+  };
 };
 
 // Helper function to format user data from DB to API response
