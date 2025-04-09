@@ -1,8 +1,12 @@
-import { MapCreationRequest } from "../interfaces/mapInterfaces";
-import { getAllMaps, createMap } from "../services/mapServices";
+import {
+  AllMapInfoRetrievalRequest,
+  MapCreationRequest,
+} from "../interfaces/mapInterfaces";
+import { getAllMaps, createMap, getMap } from "../services/mapServices";
 import { Context } from "koa";
 import { findUser } from "../services/userServices";
 import { createNode } from "../services/nodeServices";
+import { getAssignmentsForNode } from "../services/assignmentServices";
 
 export const allMaps = async (ctx: Context): Promise<void> => {
   try {
@@ -46,7 +50,36 @@ export const mapCreator = async (ctx: Context): Promise<void> => {
       ctx.body = { newMapData: newMapData };
     }
   } catch (err) {
-    console.error("Error creating map: ", err);
+    console.error("Error creating map:", err);
+    ctx.status = 500;
+    ctx.body = { error: "Internal Server Error" };
+  }
+};
+
+export const mapLoader = async (ctx: Context): Promise<void> => {
+  try {
+    const { userId, mapId } = ctx.request.body as AllMapInfoRetrievalRequest;
+
+    const mapInfo = await getMap({ mapId });
+    const fullMapInfo = {
+      ...mapInfo,
+      is_owner: mapInfo.creator_id === userId ? true : false,
+    };
+
+    for (let index = 0; index < fullMapInfo.nodes.length; index++) {
+      const assignmentList = await getAssignmentsForNode({
+        nodeId: fullMapInfo.nodes[index].id,
+      });
+      fullMapInfo.nodes[index] = {
+        ...fullMapInfo.nodes[index],
+        assignments: assignmentList,
+      };
+    }
+
+    ctx.status = 200;
+    ctx.body = { fullMapInfo: fullMapInfo };
+  } catch (err) {
+    console.error("Error loading map:", err);
     ctx.status = 500;
     ctx.body = { error: "Internal Server Error" };
   }
