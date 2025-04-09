@@ -5,7 +5,11 @@ import {
 import { getAllMaps, createMap, getMap } from "../services/mapServices";
 import { Context } from "koa";
 import { findUser } from "../services/userServices";
-import { createNode } from "../services/nodeServices";
+import {
+  createNode,
+  getNodePostreqs,
+  getNodePrereqs,
+} from "../services/nodeServices";
 import { getAssignmentsForNode } from "../services/assignmentServices";
 
 export const allMaps = async (ctx: Context): Promise<void> => {
@@ -66,13 +70,23 @@ export const mapLoader = async (ctx: Context): Promise<void> => {
       is_owner: mapInfo.creator_id === userId ? true : false,
     };
 
+    // add the assingments for each node into the node objects
     for (let index = 0; index < fullMapInfo.nodes.length; index++) {
       const assignmentList = await getAssignmentsForNode({
         nodeId: fullMapInfo.nodes[index].id,
       });
+      const prereqsList = await getNodePrereqs({
+        nodeId: fullMapInfo.nodes[index].id,
+      });
+      const postreqsList = await getNodePostreqs({
+        nodeId: fullMapInfo.nodes[index].id,
+      });
+
       fullMapInfo.nodes[index] = {
         ...fullMapInfo.nodes[index],
         assignments: assignmentList,
+        prereqs: prereqsList,
+        postreqs: postreqsList,
       };
     }
 
