@@ -3,6 +3,8 @@ import {
   NodeCreationRequest,
   DBNodeModel,
   EdgeCreationRequest,
+  NodeNeighborList,
+  GetNodeNeighborsRequest,
 } from "../interfaces/nodeInterfaces";
 
 export const createNode = async ({
@@ -50,4 +52,26 @@ export const addNodeEdges = async ({
       prereq_node_id: currentNodeId,
     });
   }
+};
+
+export const getNodePrereqs = async ({
+  nodeId,
+}: GetNodeNeighborsRequest): Promise<NodeNeighborList> => {
+  const prereqs = await db("node_prereqs")
+    .select("prereq_node_id")
+    .where({ current_node_id: nodeId });
+
+  // return a list of the node ids rather than a list of objects
+  return prereqs.map((item) => item.prereq_node_id);
+};
+
+export const getNodePostreqs = async ({
+  nodeId,
+}: GetNodeNeighborsRequest): Promise<NodeNeighborList> => {
+  const postreqs = await db("node_postreqs")
+    .select("postreq_node_id")
+    .where({ current_node_id: nodeId });
+
+  // return a list of the node ids rather than a list of objects
+  return postreqs.map((item) => item.postreq_node_id);
 };
