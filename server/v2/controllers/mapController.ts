@@ -2,6 +2,7 @@ import { MapCreationRequest } from "../interfaces/mapInterfaces";
 import { getAllMaps, createMap } from "../services/mapServices";
 import { Context } from "koa";
 import { findUser } from "../services/userServices";
+import { createNode } from "../services/nodeServices";
 
 export const allMaps = async (ctx: Context): Promise<void> => {
   try {
@@ -33,6 +34,12 @@ export const mapCreator = async (ctx: Context): Promise<void> => {
       const newMapData = await createMap({
         creator_id: creator_id,
         name: name,
+      });
+
+      // create the first node for the map
+      const firstNodeData = await createNode({
+        mapID: newMapData.id,
+        name: "Node 1",
       });
 
       ctx.status = 200;
