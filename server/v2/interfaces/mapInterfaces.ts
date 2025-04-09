@@ -1,4 +1,4 @@
-import { DBNodeModel } from "./nodeInterfaces";
+import { DBNodeModel, LoadedNodeModel } from "./nodeInterfaces";
 export interface DBMapModel {
   id: number;
   creator_id: string;
@@ -8,7 +8,7 @@ export interface DBMapModel {
 }
 
 export interface AllMapInfo extends DBMapModel {
-  nodes: DBNodeModel[];
+  nodes: DBNodeModel[] | LoadedNodeModel[];
 }
 
 export interface MapCreationRequest {

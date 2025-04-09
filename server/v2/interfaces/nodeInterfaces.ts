@@ -1,3 +1,5 @@
+import { DBAssignmentList, DBAssignmentModel } from "./assignmentInterfaces";
+
 export interface NodeCreationRequest {
   mapID: number;
   name: string;
@@ -22,4 +24,8 @@ export interface NodeAndEdgeCreationRequest {
   name: string;
   nodePrereqs: number[];
   nodePostreqs: number[];
+}
+
+export interface LoadedNodeModel extends DBNodeModel {
+  assignments: DBAssignmentList;
 }
