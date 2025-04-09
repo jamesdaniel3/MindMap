@@ -1,9 +1,10 @@
-// services/userServices.ts
 import db from "../db/db";
 import {
   User,
-  UserDbModel,
+  DBUserModel,
   UserCreateParams,
+  UserFindParams,
+  UserFindResponse,
 } from "../interfaces/userInterfaces";
 
 export const findOrCreate = async ({
@@ -44,8 +45,24 @@ export const findOrCreate = async ({
   }
 };
 
+export const findUser = async ({
+  googleUserId,
+}: UserFindParams): Promise<UserFindResponse> => {
+  const [user] = await db("users").where({ google_user_id: googleUserId });
+
+  if (user === undefined) {
+    return {
+      userExists: false,
+    };
+  }
+
+  return {
+    userExists: true,
+  };
+};
+
 // Helper function to format user data from DB to API response
-function formatUser(userData: UserDbModel): User {
+function formatUser(userData: DBUserModel): User {
   return {
     googleUserId: userData.google_user_id,
     displayName: userData.display_name,
