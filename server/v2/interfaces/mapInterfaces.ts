@@ -11,4 +11,8 @@ export interface MapCreationRequest {
   name: string;
 }
 
+export interface MapRetrievalRequest {
+  mapId: number;
+}
+
 export type DBMapList = DBMapModel[];
