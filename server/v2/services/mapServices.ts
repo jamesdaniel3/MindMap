@@ -4,6 +4,7 @@ import {
   MapCreationRequest,
   DBMapModel,
   MapRetrievalRequest,
+  AllMapInfo,
 } from "../interfaces/mapInterfaces";
 
 export const getAllMaps = async (): Promise<DBMapList> => {
@@ -28,8 +29,10 @@ export const createMap = async ({
 
 export const getMap = async ({
   mapId,
-}: MapRetrievalRequest): Promise<DBMapModel> => {
+}: MapRetrievalRequest): Promise<AllMapInfo> => {
   const [mapInfo] = await db("maps").where({ id: mapId });
 
-  return mapInfo;
+  const mapNodes = await db("nodes").where({ map_id: mapId });
+
+  return { ...mapInfo, nodes: mapNodes };
 };
