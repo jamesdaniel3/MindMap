@@ -1,5 +1,5 @@
 // Database model - represents data as stored in the database
-export interface UserDbModel {
+export interface DBUserModel {
   id?: number;
   google_user_id: string;
   display_name: string;

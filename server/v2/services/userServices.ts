@@ -1,7 +1,7 @@
 import db from "../db/db";
 import {
   User,
-  UserDbModel,
+  DBUserModel,
   UserCreateParams,
   UserFindParams,
   UserFindResponse,
@@ -62,7 +62,7 @@ export const findUser = async ({
 };
 
 // Helper function to format user data from DB to API response
-function formatUser(userData: UserDbModel): User {
+function formatUser(userData: DBUserModel): User {
   return {
     googleUserId: userData.google_user_id,
     displayName: userData.display_name,
