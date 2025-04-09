@@ -11,6 +11,8 @@ import {
   getNodePrereqs,
 } from "../services/nodeServices";
 import { getAssignmentsForNode } from "../services/assignmentServices";
+import { getUserContentForAssignment } from "../services/userContentService";
+import { DBUserContentModel } from "../interfaces/userContentInterfaces";
 
 export const allMaps = async (ctx: Context): Promise<void> => {
   try {
@@ -70,7 +72,7 @@ export const mapLoader = async (ctx: Context): Promise<void> => {
       is_owner: mapInfo.creator_id === userId ? true : false,
     };
 
-    // add the assingments for each node into the node objects
+    // add need info for each node into the node objects
     for (let index = 0; index < fullMapInfo.nodes.length; index++) {
       const assignmentList = await getAssignmentsForNode({
         nodeId: fullMapInfo.nodes[index].id,
@@ -90,8 +92,49 @@ export const mapLoader = async (ctx: Context): Promise<void> => {
       };
     }
 
+    if (fullMapInfo.is_owner) {
+      ctx.status = 200;
+      ctx.body = { fullMapInfo: fullMapInfo };
+      return;
+    }
+
+    const userContents: { [nodeId: string]: DBUserContentModel } = {};
+    const nodesToKeep = [];
+
+    for (const node of fullMapInfo.nodes) {
+      // type guard needed for TS to resolve types
+      if (!("assignments" in node)) {
+        continue;
+      }
+
+      let hasUserContent = false;
+      let isRootNode = false;
+
+      for (const assignment of node.assignments) {
+        const userContent = await getUserContentForAssignment({
+          googleUserId: userId,
+          assignmentId: assignment.id,
+        });
+
+        if (userContent) {
+          hasUserContent = true;
+          userContents[node.id.toString()] = userContent;
+        }
+      }
+
+      if (node.prereqs.length === 0) {
+        isRootNode = true;
+      }
+
+      // if the node has no user content and is not a root node it should be filtered out
+      if (hasUserContent || isRootNode) {
+        nodesToKeep.push(node);
+      }
+    }
+
+    fullMapInfo.nodes = nodesToKeep;
     ctx.status = 200;
-    ctx.body = { fullMapInfo: fullMapInfo };
+    ctx.body = { fullMapInfo: fullMapInfo, userContents: userContents };
   } catch (err) {
     console.error("Error loading map:", err);
     ctx.status = 500;
