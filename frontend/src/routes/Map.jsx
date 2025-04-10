@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import fakeJson from "../assets/fake_json.json";
 import { ReactFlow, Background, Controls } from "@xyflow/react";
 import ContentModal from "../components/ContentModal";
 
@@ -42,11 +41,11 @@ export default function Map() {
     const startNodes = data.nodes.filter((node) => node.prereqs.length === 0);
 
     // Initialize BFS with start nodes
-    startNodes.forEach((node) => {
+    startNodes.forEach((node, index) => {
       queue.push({
         node,
         level: 0,
-        position: 0,
+        position: index,
       });
     });
 
@@ -69,7 +68,7 @@ export default function Map() {
       const y = level * verticalSpacing;
 
       resultNodes.push({
-        id: node.id,
+        id: String(node.id), // Convert to string to ensure compatibility
         position: { x, y },
         data: { label: node.name },
         style: {
@@ -85,8 +84,8 @@ export default function Map() {
         if (nodeMap[targetId]) {
           resultEdges.push({
             id: `e${node.id}-${targetId}`,
-            source: node.id,
-            target: targetId,
+            source: String(node.id), // Convert to string
+            target: String(targetId), // Convert to string
             animated: false,
             style: { stroke: "#888" },
           });
@@ -126,14 +125,42 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    // Load data from your source
-    setMapInfo(fakeJson);
-  }, []);
+    const fetchMapInfo = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/v2/maps/load-map",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({ userID: uid, mapId: map_id }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("Map info retrieved", data);
+          setMapInfo(data);
+        } else {
+          console.error("Failed to retrieve map info:", data);
+        }
+      } catch (err) {
+        console.error("Error fetching map data:", err);
+      }
+    };
+    fetchMapInfo();
+  }, [uid, map_id]);
 
   useEffect(() => {
-    if (mapInfo && mapInfo.nodes) {
-      const { nodes: graphNodes, edges: graphEdges } =
-        generateGraphData(mapInfo);
+    if (mapInfo && mapInfo.fullMapInfo) {
+      const { nodes: graphNodes, edges: graphEdges } = generateGraphData(
+        mapInfo.fullMapInfo
+      );
+      console.log("Generated nodes:", graphNodes);
+      console.log("Generated edges:", graphEdges);
       setNodes(graphNodes);
       setEdges(graphEdges);
     }
@@ -142,11 +169,15 @@ export default function Map() {
   // Function to handle node click and display modal
   const onNodeClick = useCallback(
     (event, node) => {
-      // Find the full node data from mapInfo
-      const nodeData = mapInfo.nodes.find((n) => n.id === node.id);
-      if (nodeData) {
-        setSelectedNode(nodeData);
-        setShowModal(true);
+      // Find the full node data from the correct location in mapInfo
+      if (mapInfo && mapInfo.fullMapInfo && mapInfo.fullMapInfo.nodes) {
+        const nodeData = mapInfo.fullMapInfo.nodes.find(
+          (n) => String(n.id) === node.id
+        );
+        if (nodeData) {
+          setSelectedNode(nodeData);
+          setShowModal(true);
+        }
       }
     },
     [mapInfo]
@@ -165,17 +196,32 @@ export default function Map() {
       <div className="back-button-container" onClick={handleGoBack}>
         <p className="back-home-text">Back To Maps</p>
       </div>
-      <ReactFlow nodes={nodes} edges={edges} onNodeClick={onNodeClick} fitView>
-        <Background />
-        <Controls />
-      </ReactFlow>
+      {nodes.length > 0 ? (
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodeClick={onNodeClick}
+          fitView
+          nodeTypes={{}}
+          fitViewOptions={{ padding: 0.2 }}
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
+      ) : (
+        <div className="loading-container">
+          <p>Loading map data or no nodes available...</p>
+        </div>
+      )}
 
-      <ContentModal
-        showModal={showModal}
-        selectedNode={selectedNode}
-        userContents={mapInfo.userContents}
-        closeModal={closeModal}
-      />
+      {mapInfo && mapInfo.fullMapInfo && (
+        <ContentModal
+          showModal={showModal}
+          selectedNode={selectedNode}
+          userContents={mapInfo.userContents}
+          closeModal={closeModal}
+        />
+      )}
     </div>
   );
 }
