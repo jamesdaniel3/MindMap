@@ -18,9 +18,8 @@ function Home({ userInfo }) {
           `http://localhost:8080/api/v2/maps/find-all`
         );
         const data = await response.json();
-        console.log("Map data", data);
-        if (data.statusCode === 200) {
-          setMaps(data.data);
+        if (response.ok) {
+          setMaps(data.allMapData);
           setIsLoading(false);
         } else {
           setError("No maps found.");
