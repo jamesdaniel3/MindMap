@@ -7,7 +7,6 @@ export default function MapCard({ mapInfo, userInfo }) {
     navigate(`/map/${userInfo.uid}/${mapInfo.id}`);
   }
 
-  console.log(mapInfo);
   return (
     <>
       <div className="map-card" onClick={handleMapCardClick}>
