@@ -55,6 +55,7 @@ function Home({ userInfo }) {
 
         if (response.ok) {
           console.log("User created/found successfully:", data.user);
+          setIsLoading(false);
         } else {
           console.error("Error response:", data);
           setError("Error: " + (data.error || "Unknown error"));
