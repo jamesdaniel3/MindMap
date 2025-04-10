@@ -39,8 +39,6 @@ function Home({ userInfo }) {
           photo_url: userInfo.photoURL,
         };
 
-        const jsonBody = JSON.stringify(formattedUserInfo);
-
         const response = await fetch(
           "http://localhost:8080/api/v2/users/find-or-create",
           {
@@ -49,7 +47,7 @@ function Home({ userInfo }) {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            body: jsonBody,
+            body: JSON.stringify(formattedUserInfo),
           }
         );
 
