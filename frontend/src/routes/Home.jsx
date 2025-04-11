@@ -14,21 +14,61 @@ function Home({ userInfo }) {
   useEffect(() => {
     const fetchMapInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/maps`);
+        const response = await fetch(
+          `http://localhost:8080/api/v2/maps/find-all`
+        );
         const data = await response.json();
-        console.log(data);
-        if (data.statusCode === 200) {
-          setMaps(data.data);
+        if (response.ok) {
+          setMaps(data.allMapData);
           setIsLoading(false);
         } else {
-          setError("No menu items found.");
+          setError("No maps found.");
           setIsLoading(false);
         }
       } catch (err) {
-        setError("Error fetching menu items:", err);
+        setError("Error fetching maps:", err);
       }
     };
 
+    const createUserIfNeeded = async () => {
+      try {
+        const formattedUserInfo = {
+          googleUserId: userInfo.uid,
+          displayName: userInfo.displayName,
+          email: userInfo.email,
+          photo_url: userInfo.photoURL,
+        };
+
+        const response = await fetch(
+          "http://localhost:8080/api/v2/users/find-or-create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(formattedUserInfo),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("User created/found successfully:", data.user);
+          setIsLoading(false);
+        } else {
+          console.error("Error response:", data);
+          setError("Error: " + (data.error || "Unknown error"));
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error("Full error:", err);
+        setError("User could not be added to the DB: " + err.message);
+        setIsLoading(false);
+      }
+    };
+
+    createUserIfNeeded();
     fetchMapInfo();
   }, []);
 
