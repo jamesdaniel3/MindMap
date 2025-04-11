@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
     "@xyflow/react": "^12.5.1",
+    "express": "^5.1.0",
     "firebase": "^11.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
