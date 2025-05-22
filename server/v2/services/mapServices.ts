@@ -5,10 +5,19 @@ import {
   DBMapModel,
   MapRetrievalRequest,
   AllMapInfo,
+  UserMapRetrievalRequest,
 } from "../interfaces/mapInterfaces";
 
 export const getAllMaps = async (): Promise<DBMapList> => {
   const mapsData = await db("maps");
+
+  return mapsData;
+};
+
+export const getUserMaps = async ({
+  userId,
+}: UserMapRetrievalRequest): Promise<DBMapList> => {
+  const mapsData = await db("maps").where({ creator_id: userId });
 
   return mapsData;
 };

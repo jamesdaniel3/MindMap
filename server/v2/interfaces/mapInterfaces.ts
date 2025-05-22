@@ -20,6 +20,10 @@ export interface MapRetrievalRequest {
   mapId: number;
 }
 
+export interface UserMapRetrievalRequest {
+  userId: string;
+}
+
 export interface AllMapInfoRetrievalRequest {
   mapId: number;
   userId: string;
