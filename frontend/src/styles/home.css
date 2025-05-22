@@ -7,6 +7,12 @@
   padding-right: 5%;
 }
 
+/* Add blur effect when modal is open */
+.home-content.modal-open {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
 .map-card {
   border: 2px;
   border-style: solid;
@@ -38,4 +44,69 @@
   font-family: "Lato-Bold", sans-serif;
   font-weight: 600;
   font-size: 20px;
+}
+
+/* Modal backdrop overlay */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-backdrop.hidden {
+  display: none;
+}
+
+/*      MAP CREATION MODAL        */
+.creation-modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 300px;
+  max-width: 90vw;
+  background: white;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 12px;
+  padding: 20px 10px;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.creation-modal-container.hidden {
+  display: none;
+}
+
+.creation-modal-container .modal-header {
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.creation-modal-container .modal-submission {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.creation-modal-container .modal-submission .submission-button {
+  background-color: black;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+
+.creation-modal-container .modal-submission .submission-text {
+  margin-top: 0;
+  margin-bottom: 0;
 }
