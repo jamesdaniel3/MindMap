@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
-export default function MapCreationModal({ showModal, userId, onClose }) {
+export default function MapCreationModal({ showModal, userId }) {
+  const navigate = useNavigate();
   const [mapName, setMapName] = useState("");
   const [isCreatingMap, setIsCreatingMap] = useState(false);
   const [error, setError] = useState("");
 
   const handleMapCreation = async () => {
-    console.log(userId);
     if (!mapName.trim()) {
       setError("Please enter a map name");
       return;
@@ -35,7 +37,8 @@ export default function MapCreationModal({ showModal, userId, onClose }) {
       }
 
       setMapName("");
-      onClose();
+      const data = await response.json(); // probably want error handling
+      navigate(`/map/${userId}/${data.newMapData.id}`);
     } catch (err) {
       console.log("Error creating map", err);
       setError(err.message);
@@ -59,8 +62,17 @@ export default function MapCreationModal({ showModal, userId, onClose }) {
             value={mapName}
             onChange={(e) => setMapName(e.target.value)}
           ></input>
-          <div className="submission-button" onClick={handleMapCreation}>
-            <p className="submission-text">Create</p>
+          <div
+            className="submission-button"
+            onClick={!isCreatingMap && handleMapCreation}
+          >
+            <p className="submission-text">
+              {isCreatingMap ? (
+                <ClipLoader size={15} color="white" />
+              ) : (
+                "Create"
+              )}
+            </p>
           </div>
         </div>
       </div>
