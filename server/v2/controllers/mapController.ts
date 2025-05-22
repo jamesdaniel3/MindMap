@@ -40,9 +40,14 @@ export const allMaps = async (ctx: Context): Promise<void> => {
 
 export const allUserMaps = async (ctx: Context): Promise<void> => {
   try {
-    const { userId } = ctx.request.body as UserMapRetrievalRequest;
-    const userMapData = await getUserMaps({ userId: userId });
+    const { userId } = ctx.params;
 
+    if (!userId) {
+      ctx.status = 400;
+      ctx.body = { error: "userId is required" };
+      return;
+    }
+    const userMapData = await getUserMaps({ userId: userId });
     ctx.status = 200;
     ctx.body = { allMapData: userMapData };
   } catch (err) {

@@ -15,7 +15,7 @@ function Home({ userInfo }) {
     const fetchMapInfo = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v2/maps/find-all`
+          `http://localhost:8080/api/v2/maps/user-find-all/${userInfo.uid}`
         );
         const data = await response.json();
         if (response.ok) {
@@ -54,7 +54,7 @@ function Home({ userInfo }) {
         const data = await response.json();
 
         if (response.ok) {
-          console.log("User created/found successfully:", data.user);
+          console.log("User created/found successfully");
           setIsLoading(false);
         } else {
           console.error("Error response:", data);

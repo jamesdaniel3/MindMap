@@ -11,8 +11,8 @@ const router = new Router({
 });
 
 router.get("/find-all", allMaps);
-router.get("/user-find-all", allUserMaps);
+router.get("/user-find-all/:userId", allUserMaps);
 router.post("/create-map", mapCreator);
-router.post("/load-map", mapLoader);
+router.post("/load-map", mapLoader); // this should really be rewritten as a get request with a parameter
 
 export default router;
