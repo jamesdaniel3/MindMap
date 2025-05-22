@@ -104,8 +104,11 @@
   color: white;
   padding: 6px 8px;
   border-radius: 12px;
+  min-width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .creation-modal-container .modal-submission .submission-text {
   margin-top: 0;
   margin-bottom: 0;
