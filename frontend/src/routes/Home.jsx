@@ -109,7 +109,6 @@ function Home({ userInfo }) {
               <MapCreationModal
                 showModal={showMapCreator}
                 userId={userInfo.uid}
-                onClose={handleCloseModal}
               />
             </div>
           </div>
